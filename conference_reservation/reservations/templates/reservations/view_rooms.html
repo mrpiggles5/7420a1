@@ -1,0 +1,31 @@
+{% extends 'reservations/base.html' %}
+
+{% block title %}View Rooms{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">All Rooms</h1>
+
+{% if rooms %}
+    <div class="row">
+        {% for room in rooms %}
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ room.name }}</h5>
+                    <p class="card-text">
+                        <strong>Capacity:</strong> {{ room.capacity }}<br>
+                        <strong>Location:</strong> {{ room.location }}<br>
+                        <strong>Equipment:</strong> {{ room.equipment|default:"None" }}
+                    </p>
+                    <a href="{% url 'book_room' %}?room_id={{ room.id }}" class="btn btn-primary">
+                        Book Room
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No rooms available.</p>
+{% endif %}
+{% endblock %}

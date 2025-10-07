@@ -1,0 +1,11 @@
+{% extends 'reservations/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center">
+    <h1>Welcome to Conference Room Booking</h1>
+    <p>View available rooms or book your reservation after logging in.</p>
+    <a href="{% url 'view_rooms' %}" class="btn btn-primary btn-lg">View Rooms</a>
+</div>
+{% endblock %}
