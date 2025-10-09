@@ -1,14 +1,15 @@
 {
   "builds": [
     {
-      "src": "conference_reservation/conference_reservation/wsgi.py",
-      "use": "@vercel/python"
+      "src": "vercel.py",
+      "use": "@vercel/python",
+      "config": { "runtime": "python3.12" }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "conference_reservation/conference_reservation/wsgi.py"
+      "dest": "vercel.py"
     }
   ]
 }
