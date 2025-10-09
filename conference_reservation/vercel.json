@@ -1,4 +1,5 @@
 {
+  "buildCommand": "bash build.sh",
   "builds": [
     {
       "src": "manage.py",
@@ -11,6 +12,5 @@
       "src": "/(.*)",
       "dest": "manage.py"
     }
-  ],
-  "buildCommand": "bash build.sh"
+  ]
 }
