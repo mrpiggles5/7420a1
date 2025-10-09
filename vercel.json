@@ -1,0 +1,22 @@
+{
+  "builds": [
+    {
+      "src": "conference_reservation/conference_reservation/wsgi.py",
+      "use": "@vercel/python"
+    },
+    {
+      "src": "conference_reservation/static/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/conference_reservation/static/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "conference_reservation/conference_reservation/wsgi.py"
+    }
+  ]
+}
