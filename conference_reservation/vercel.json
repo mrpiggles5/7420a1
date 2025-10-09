@@ -1,5 +1,4 @@
 {
-  "buildCommand": "bash build.sh",
   "builds": [
     {
       "src": "conference_reservation/wsgi.py",
