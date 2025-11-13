@@ -1,5 +1,5 @@
 """
-WSGI config for conference_reservation project.
+WSGI config for conference_reservationdeletegonnabe project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
