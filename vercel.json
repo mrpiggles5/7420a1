@@ -1,15 +1,10 @@
 {
   "builds": [
-    {
-      "src": "vercel.py",
-      "use": "@vercel/python",
-      "config": { "runtime": "python3.12" }
-    }
+    { "src": "manage.py", "use": "@vercel/python" },
+    { "src": "frontend/package.json", "use": "@vercel/static-build", "config": { "distDir": "frontend/build" } }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "vercel.py"
-    }
+    { "src": "/api/(.*)", "dest": "manage.py" },
+    { "src": "/(.*)", "dest": "/frontend/build/$1" }
   ]
 }
