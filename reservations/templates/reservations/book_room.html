@@ -1,0 +1,27 @@
+{% extends 'reservations/base.html' %}
+
+{% block title %}Book Room{% endblock %}
+
+{% block content %}
+<h1>Book a Room</h1>
+{% for room in rooms %}
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ room.name }}</h5>
+        <p>Capacity: {{ room.capacity }}</p>
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="room_id" value="{{ room.id }}">
+            <div class="row mb-2">
+                <div class="col"><label>Date</label><input type="date" name="date" class="form-control" required></div>
+                <div class="col"><label>Start</label><input type="time" name="start_time" class="form-control" required></div>
+                <div class="col"><label>End</label><input type="time" name="end_time" class="form-control" required></div>
+            </div>
+            <button type="submit" class="btn btn-success">Book</button>
+        </form>
+    </div>
+</div>
+{% empty %}
+<p>No rooms available for booking.</p>
+{% endfor %}
+{% endblock %}

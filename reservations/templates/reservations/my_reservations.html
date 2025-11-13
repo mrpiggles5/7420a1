@@ -1,0 +1,36 @@
+{% extends "reservations/base.html" %}
+
+{% block title %}My Reservations{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">My Reservations</h2>
+
+<div class="row">
+    {% for reservation in reservations %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ reservation.room.name }}</h5>
+                    <p class="card-text">
+                        <strong>Date:</strong> {{ reservation.date }} <br>
+                        <strong>Start Time:</strong> {{ reservation.start_time }} <br>
+                        <strong>End Time:</strong> {{ reservation.end_time }}
+                    </p>
+                </div>
+                <div class="card-footer text-end">
+                    <a href="{% url 'edit_reservation' reservation.id %}" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="{% url 'delete_reservation' reservation.id %}"
+                       class="btn btn-sm btn-danger"
+                       onclick="return confirm('Are you sure you want to delete this reservation?');">
+                       Delete
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">No reservations yet.</div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
