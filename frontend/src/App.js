@@ -7,12 +7,40 @@ function App() {
     !!localStorage.getItem("accessToken")
   );
 
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    setIsLoggedIn(false);
+  };
+
+  const token = localStorage.getItem("accessToken");
+
   return (
-    <div>
+    <div style={{ padding: "20px", fontFamily: "Arial" }}>
       {isLoggedIn ? (
-        <RoomList />
+        <>
+          <button
+            onClick={handleLogout}
+            style={{
+              backgroundColor: "#d9534f",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              padding: "8px 12px",
+              marginBottom: "15px",
+              cursor: "pointer",
+            }}
+          >
+            Logout
+          </button>
+          <RoomList token={token} />
+        </>
       ) : (
-        <Login onLogin={() => setIsLoggedIn(true)} />
+        <Login onLogin={handleLogin} />
       )}
     </div>
   );
