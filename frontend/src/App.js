@@ -1,46 +1,64 @@
-import React, { useState } from "react";
-import RoomList from "./RoomList";
+import React, { useState, useEffect } from "react";
 import Login from "./Login";
+import RoomList from "./RoomList";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    !!localStorage.getItem("accessToken")
-  );
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
 
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
+  // Check if token exists on page load
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    const storedUser = localStorage.getItem("username");
+
+    if (token) {
+      setIsLoggedIn(true);
+      if (storedUser) setUsername(storedUser);
+    }
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("username");
+
     setIsLoggedIn(false);
+    setUsername("");
   };
 
-  const token = localStorage.getItem("accessToken");
-
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial" }}>
+    <div style={{ fontFamily: "Arial", padding: "20px" }}>
+      {/* HEADER */}
+      <header style={{ marginBottom: "20px", fontSize: "18px" }}>
+        {isLoggedIn ? (
+          <>
+            <strong>Logged in as {username}</strong>
+            <button
+              onClick={handleLogout}
+              style={{
+                marginLeft: "10px",
+                padding: "6px 12px",
+                cursor: "pointer",
+              }}
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <strong>Please log in</strong>
+        )}
+      </header>
+
+      {/* MAIN CONTENT */}
       {isLoggedIn ? (
-        <>
-          <button
-            onClick={handleLogout}
-            style={{
-              backgroundColor: "#d9534f",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              padding: "8px 12px",
-              marginBottom: "15px",
-              cursor: "pointer",
-            }}
-          >
-            Logout
-          </button>
-          <RoomList token={token} />
-        </>
+        <RoomList />
       ) : (
-        <Login onLogin={handleLogin} />
+        <Login
+          onLogin={(user) => {
+            setIsLoggedIn(true);
+            setUsername(user);
+          }}
+        />
       )}
     </div>
   );

@@ -1,95 +1,62 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const API_BASE_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://7420a1.vercel.app"
-    : "http://127.0.0.1:8000";
-
 function Login({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
+  const API_URL = "http://127.0.0.1:8000/api/token/";
+
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await axios.post(`${API_BASE_URL}/api/token/`, {
+      const response = await axios.post(API_URL, {
         username,
         password,
       });
 
-      const { access, refresh } = response.data;
+      localStorage.setItem("accessToken", response.data.access);
+      localStorage.setItem("refreshToken", response.data.refresh);
+      localStorage.setItem("username", username);
 
-      // save tokens to local storage
-      localStorage.setItem("accessToken", access);
-      localStorage.setItem("refreshToken", refresh);
-
-      onLogin(); // tells App.js we’re logged in
+      onLogin(username);
     } catch (err) {
-      console.error("Login error:", err);
-      setError("Invalid username or password.");
+      setError("Invalid username or password");
     }
   };
 
   return (
-    <div
-      style={{
-        padding: "20px",
-        maxWidth: "300px",
-        margin: "40px auto",
-        fontFamily: "Arial",
-      }}
-    >
+    <div style={{ maxWidth: "300px" }}>
       <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: "10px" }}>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            style={{
-              width: "100%",
-              padding: "8px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-            }}
-          />
-        </div>
-        <div style={{ marginBottom: "10px" }}>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{
-              width: "100%",
-              padding: "8px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-            }}
-          />
-        </div>
-        <button
-          type="submit"
-          style={{
-            width: "100%",
-            padding: "8px",
-            backgroundColor: "#007bff",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-          }}
-        >
+
+      <form onSubmit={handleLogin}>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          style={{ width: "100%", marginBottom: "10px" }}
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          required
+          onChange={(e) => setPassword(e.target.value)}
+          style={{ width: "100%", marginBottom: "10px" }}
+        />
+
+        <button style={{ width: "100%", padding: "8px" }} type="submit">
           Login
         </button>
       </form>
-      {error && <p style={{ color: "red", marginTop: "10px" }}>{error}</p>}
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 }
